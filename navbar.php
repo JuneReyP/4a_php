@@ -25,19 +25,19 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
-                                    <?php 
-                                    if(isset($active_page)){
+                                    <?php
+                                    if (isset($index_page)) {
                                         echo '<a class="nav-link" aria-current="page" href="index.php"><b>Home</b></a>';
-                                    }else{
+                                    } else {
                                         echo '<a class="nav-link" aria-current="page" href="index.php">Home</a>';
                                     }
                                     ?>
                                 </li>
                                 <li class="nav-item">
-                                    <?php 
-                                    if(isset($active_page)){
+                                    <?php
+                                    if (isset($blog_page)) {
                                         echo '<a class="nav-link" href="blogs.php"><b>Blogs</b></a>';
-                                    }else{
+                                    } else {
                                         echo '<a class="nav-link" href="blogs.php">Blogs</a>';
                                     }
                                     ?>
@@ -46,10 +46,22 @@
                                     <a class="nav-link" href="#">About</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Login</a>
+                                    <?php
+                                    if (isset($login_page)) {
+                                        echo '<a class="nav-link" href="login.php"><b>Login</b></a>';
+                                    } else {
+                                        echo '<a class="nav-link" href="login.php">Login</a>';
+                                    }
+                                    ?>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Register</a>
+                                <?php
+                                    if (isset($register_page)) {
+                                        echo '<a class="nav-link" href="register.php"><b>Register</b></a>';
+                                    } else {
+                                        echo '<a class="nav-link" href="register.php">Register</a>';
+                                    }
+                                    ?>
                                 </li>
                             </ul>
                             <form class="d-flex" role="search">
