@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,21 +50,28 @@
                                 </li>
                                 <li class="nav-item">
                                     <?php
-                                    if (isset($login_page)) {
-                                        echo '<a class="nav-link" href="login.php"><b>Login</b></a>';
-                                    } else {
-                                        echo '<a class="nav-link" href="login.php">Login</a>';
-                                    }
-                                    ?>
+                                    if (isset($_SESSION['logged_in'])) {
+                                        echo '<a class="nav-link" href="logout.php">Logout</a>';
+                                    } else { ?>
+                                    <?php
+                                        if (isset($login_page)) {
+                                            echo '<a class="nav-link" href="login.php"><b>Login</b></a>';
+                                        } else {
+                                            echo '<a class="nav-link" href="login.php">Login</a>';
+                                        }
+                                        ?>
+                                  
+                                   
                                 </li>
                                 <li class="nav-item">
-                                <?php
+                                    <?php
                                     if (isset($register_page)) {
                                         echo '<a class="nav-link" href="register.php"><b>Register</b></a>';
                                     } else {
                                         echo '<a class="nav-link" href="register.php">Register</a>';
                                     }
                                     ?>
+                                     <?php } ?>
                                 </li>
                             </ul>
                             <form class="d-flex" role="search">

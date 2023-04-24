@@ -3,6 +3,10 @@ $register_page = true;
 include 'navbar.php';
 include 'conn.php';
 
+if(isset($_SESSION['logged_in'])){
+    header('Location: blogs.php');
+}
+
 if (isset($_POST['register'])) {
     //get the data from the registration form
     $first_name = $_POST['fname'];
@@ -14,11 +18,11 @@ if (isset($_POST['register'])) {
     $row = $conn->prepare("SELECT * FROM users WHERE email = ? ");
     $row->execute([$email]);
 
-    if($row->rowCount() == 1){
+    if ($row->rowCount() <= 1) {
         $message = "Email Already registered";
-    }elseif ($password != $confirm_password) {
+    } elseif ($password != $confirm_password) {
         $message = "Password do not match";
-    }else{
+    } else {
         //insert to DB
         $hashed = password_hash($password, PASSWORD_DEFAULT);
         $insert = $conn->prepare("INSERT INTO users(first_name, last_name, email, password) VALUES(?, ?, ?, ?)");
@@ -36,12 +40,12 @@ if (isset($_POST['register'])) {
 ?>
 <div class="row justify-content-center">
     <div class="col-5 mt-4 mb-5 shadow p-4">
-        <?php 
-            if(isset($message)){
-                echo '<div class="alert alert-warning" role="alert">
-                        '.$message.'
-                    </div>';
-            }
+        <?php
+        if (isset($message)) { ?>
+            <div class="alert alert-info" role="alert">
+                <?= $message; ?>
+            </div>
+        <?php   }
         ?>
         <form action="register.php" method="POST" class="row g-3 needs-validation" novalidate>
             <div class="col-md-12">

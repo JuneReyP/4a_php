@@ -3,17 +3,21 @@ $blog_page = true;
 include 'conn.php';
 include 'navbar.php';
 
+if(!isset($_SESSION['logged_in'])){
+    header('Location: index.php');
+}
 
 //insert to database
 if (isset($_POST['post'])) {
     //get the data to the form
+    $user = $_POST['user_id'];
     $title = $_POST['title'];
     $content = $_POST['content'];
 
     //inserting data to your table postings
-    $insert = $conn->prepare("INSERT INTO postings(post_title, post_content) VALUES (?, ?)");
+    $insert = $conn->prepare("INSERT INTO postings(post_title, post_content, u_id) VALUES (?, ?, ?)");
     //data binding
-    $insert->execute([$title, $content]);
+    $insert->execute([$title, $content, $user]);
 
     echo "<script>alert('Posting Success!')</script>";
 }
@@ -47,8 +51,7 @@ if (isset($_GET['delete'])) {
 
     echo "<script>alert('Posting Deleted!')</script>";
 }
-
-//var_dump($_GET['id']);
+//var_dump($_SESSION['user_id']);
 ?>
 <div class="container">
     <div class="row">
@@ -82,8 +85,9 @@ if (isset($_GET['delete'])) {
             <!-- update form end -->
         <?php  } else { ?>
             <!-- insert form start -->
-            <div class="col-3 shadow p-4 mt-3">
-                <form method="POST" action="blogs.php" class="row g-3 needs-validation">
+            <div class="col-3 p-4 mt-3">
+                <form method="POST" action="blogs.php" class="row g-3 needs-validation shadow p-4">
+                    <input type="hidden" name="user_id" value="<?= $_SESSION['user_id']; ?>">
                     <div class="mb-3">
                         <label for="validationCustom01" class="form-label">Post Title</label>
                         <input type="text" class="form-control" id="validationCustom01" name="title" required>
@@ -114,7 +118,9 @@ if (isset($_GET['delete'])) {
                 <tbody>
                     <?php
                     $count = 1;
-                    $rows = $conn->query("SELECT * FROM postings");
+                    $id = $_SESSION['user_id'];
+                    $rows = $conn->prepare("SELECT * FROM postings WHERE u_id = ?");
+                    $rows->execute([$id]);
                     foreach ($rows as $row) { ?>
                         <tr>
                             <td><?= $count++; ?></td>
